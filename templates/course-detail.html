@@ -1,0 +1,221 @@
+{% extends 'index.html' %}
+{% load staticfiles %}
+{% block header %}
+	<meta charset="UTF-8">
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1" >
+	<title>公开课列表</title>
+	<link rel="stylesheet" type="text/css" href="{% static 'css/reset.css'%}">
+	<link rel="stylesheet" type="text/css" href="{% static 'css/animate.css'%}">
+	<link rel="stylesheet" type="text/css" href="{% static 'css/style.css'%}">
+    
+    <script src="{% static '/js/jquery.min.js' %}" type="text/javascript"></script>
+    <script src="{% static 'js/jquery-migrate-1.2.1.min.js' %}" type="text/javascript"></script>
+{% endblock %}
+{% block menu %}
+<nav>
+				<div class="nav">
+					<div class="wp">
+						<ul>
+							<li ><a href="/">首页</a></li>
+							<li class="active">
+								<a href="{% url 'course-list' %}">
+									公开课<img class="hot" src="{% static '/images/nav_hot.png'%}">
+								</a>
+							</li>
+							<li >
+								<a href="teachers-list.html">授课教师</a>
+							</li>
+							<li ><a href="{% url 'org-list' %}">授课机构</a></li>
+						</ul>
+					</div>
+				</div>
+			</nav>
+{% endblock %}
+
+
+{% block body %}
+    <section>
+	<div class="wp">
+		<div class="crumbs">
+			<ul>
+				<li><a href="index.html">首页</a>></li>
+                <li><a href="{% url 'course-list' %}">公开课程</a>></li>
+				<li>课程详情</li>
+			</ul>
+		</div>
+	</div>
+</section>
+
+
+    <section>
+	<div class="wp">
+		<div class="groupPurchase_detail detail">
+			<div class="toppro">
+				<div class="left">
+					<div class="picbox">
+						<div class="tb-booth tb-pic">
+							<img width="440" height="445" src="{{ data.image }}" class="jqzoom" />
+						</div>
+
+					</div>
+					<div class="des">
+						<h1 title="{{ data.tag }}">{{ data.name }}</h1>
+						<span class="key">{{ data.desc }}</span>
+						<div class="prize">
+							<span class="fl">难度：<i class="key">{% if data.degree == 'cj' %}初级{% elif data.degree == 'zj' %}中级{% else %}高级{% endif %}</i></span>
+							<span class="fr">学习人数：{{ data.students }}</span>
+						</div>
+						<ul class="parameter">
+							<li><span class="pram word3">时&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;长：{{ data.learn_times }}</span><span>0</span></li>
+                            <li><span class="pram word3">章&nbsp;节&nbsp;数：</span><span>5</span></li>
+                            <li><span class="pram word3">课程类别：</span><span title="">{{ data.category }}</span></li>
+							<li class="piclist"><span class="pram word4">学习用户：</span>
+                                
+                                    <span class="pic"><img width="40" height="40" src="../static/media/image/2016/12/default_big_14.png"/></span>
+                                
+							</li>
+						</ul>
+						<div class="btns">
+							<div class="btn colectgroupbtn"  id="jsLeftBtn">
+                                  收藏
+                            </div>
+                                <div class="buy btn"><a style="color: white" href="{% url 'lesson-list' %}?c_id={{ data.id }}">开始学习</a></div>
+						</div>
+					</div>
+				</div>
+				<div class="right">
+					<div class="head">
+						<h1>授课机构</h1>
+						<p>世界名校，课程权威</p>
+					</div>
+					<div class="pic">
+                        <a href="{% url 'org-list' %}{{ course_org.id }}">
+                            <img width="150" height="80" src="{{ MEDIA_URL }}{{ course_org.image }}"/>
+                        </a>
+                    </div>
+					<a href="{% url 'org-list' %}{{ course_org.id }}">
+                        <h2 class="center" title="清华大学">{{ course_org.name }}</h2>
+                    </a>
+					<div class="btn  notlogin
+					     "data-favid="14" id="jsRightBtn">
+                         收藏
+                    </div>
+					<div class="clear">
+						<ul>
+                            <li>
+                                <span>课 &nbsp;程&nbsp; 数：&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;   {{ course_org.course_nums }}</span>
+                            </li>
+                            <li>
+                                <span>教 &nbsp;师&nbsp; 数：&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  {{ course_org.get_teacher_nums }}</span>
+                            </li>
+							<li>所在地区：&nbsp;&nbsp;{{ course_org.address }}</li>
+							<li>认&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;证&nbsp;:
+                                &nbsp;&nbsp;
+								    <img title="金牌机构", src="{% static '/images/gold.png'%}"/>
+							</li>
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</section>
+    <section>
+	<div class="wp">
+		<div class="list groupPurchase_detail_pro">
+			<div class="left layout">
+				<div class="head">
+					<ul class="tab_header">
+						<li class="active">课程详情</li>
+					</ul>
+				</div>
+				<div class="tab_cont tab_cont1">
+                    
+					<p>&nbsp; &nbsp; {{ data.detail }}</p>
+				</div>
+				<div class="tab_cont tab_cont2" >
+					<div class="comment">
+						<div class="comenlist">
+
+	                    </div>
+					</div>
+				</div>
+			</div>
+			<div class="right layout">
+				<div class="head">相关课程推荐</div>
+                <div class="group_recommend">
+
+                        <dl>
+                            <dt>
+                                <a target="_blank" href="{% url 'course-list' %}{{ related_course.id }}">
+                                    <img width="240" height="220" class="scrollLoading" src="{{ MEDIA_URL }}{{ related_course.image }}"/>
+                                </a>
+                            </dt>
+                            <dd>
+                                <a target="_blank" href=""><h2> {{ related_course.name }}</h2></a>
+                                <span class="fl">学习时长：<i class="key">{{ related_course.learn_times }}</i></span>
+                            </dd>
+                        </dl>
+                    
+
+
+                </div>
+			</div>
+		</div>
+	</div>
+</section>
+
+{% endblock %}
+{% block js %}
+
+
+<script src="{% static 'js/selectUi.js' %}" type='text/javascript'></script>
+<script src="{% static 'js/deco-common.js' %}" type='text/javascript'></script>
+<script type="text/javascript" src="{% static 'js/plugins/laydate/laydate.js' %}"></script>
+<script src="{% static 'js/plugins/layer/layer.js' %}"></script>
+<script src="{% static 'js/plugins/queryCity/js/public.js' %}" type="text/javascript"></script>
+<script src="{% static 'js/unslider.js' %}" type="text/javascript"></script>
+<script src="{% static 'js/plugins/jquery.scrollLoading.js' %}"  type="text/javascript"></script>
+<script src="{% static 'js/deco-common.js' %}"  type="text/javascript"></script>
+
+<script type="text/javascript">
+//收藏分享
+function add_fav(current_elem, fav_id, fav_type){
+    $.ajax({
+        cache: false,
+        type: "POST",
+        url:"/add_fav/",
+        data:{'fav_id':fav_id, 'fav_type':fav_type},
+        async: true,
+        beforeSend:function(xhr, settings){
+            xhr.setRequestHeader("X-CSRFToken", '{{ csrf_token }}');
+        },
+        success: function(data) {
+            if(data.status == 'fail'){
+                if(data.msg == '用户未登录'){
+                    window.location.href="/login/";
+                }else{
+                    alert(data.msg)
+                }
+
+            }else if(data.status == 'success'){
+                current_elem.text(data.msg)
+            }
+        },
+    });
+}
+
+$('#jsLeftBtn').on('click', function(){
+    add_fav($(this), {{ data.id }}, 1);
+});
+
+$('#jsRightBtn').on('click', function(){
+    add_fav($(this), {{ course_org.id }}, 2);
+});
+
+
+</script>
+
+{% endblock %}
+
